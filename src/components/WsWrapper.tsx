@@ -238,7 +238,7 @@ export function WsWrapper({ children }: { children: React.ReactNode }) {
 
 	return (
 		<>
-			<div className="pb-[60px]">{children}</div>{" "}
+			<div className="pb-15">{children}</div>{" "}
 			<BottomTabBar
 				tabs={tabs}
 				currentTab={currentTab}

@@ -282,7 +282,7 @@ export default function TaskLayout({ mini = false, addPadding = true }: Props) {
 						initial={{ opacity: 0, y: -20 }}
 						animate={{ opacity: 1, y: 0 }}
 						exit={{ opacity: 0, y: -20 }}
-						className={`fixed top-4 left-4 right-4 z-50 p-3 border-1 rounded-lg shadow-lg flex items-center ${
+						className={`fixed top-4 left-4 right-4 z-50 p-3 border rounded-lg shadow-lg flex items-center ${
 							isDark ? "bg-gray-800 text-white" : "bg-white text-gray-800"
 						}`}
 					>
@@ -299,6 +299,20 @@ export default function TaskLayout({ mini = false, addPadding = true }: Props) {
 					</motion.div>
 				)}
 			</AnimatePresence>
+
+			{displayedTasks.length === 0 && (
+				<div className="flex flex-col items-center justify-center py-16 text-center">
+					<div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mb-4">
+						<CircleX className="w-8 h-8 text-slate-400" />
+					</div>
+					<h3 className="text-slate-600 font-medium text-lg mb-1">
+						No tasks available
+					</h3>
+					<p className="text-slate-400 text-sm">
+						Check back later for new tasks to earn rewards
+					</p>
+				</div>
+			)}
 
 			{displayedTasks.map((task) => {
 				const rewardTier = getRewardTier(task.reward_point);
@@ -325,7 +339,7 @@ export default function TaskLayout({ mini = false, addPadding = true }: Props) {
 						>
 							{/* Gradient accent */}
 							<div
-								className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${
+								className={`absolute top-0 left-0 right-0 h-1 bg-linear-to-r ${
 									needsBinding
 										? "from-amber-400 to-orange-400"
 										: rewardTier.color
@@ -335,7 +349,7 @@ export default function TaskLayout({ mini = false, addPadding = true }: Props) {
 							<div className="p-4 md:p-5">
 								<div className="flex items-start gap-3 md:gap-4">
 									{/* Platform Icon with Glow */}
-									<div className="relative flex-shrink-0">
+									<div className="relative shrink-0">
 										{task.platform ? (
 											<motion.div
 												whileHover={{ scale: 1.1 }}
@@ -344,11 +358,11 @@ export default function TaskLayout({ mini = false, addPadding = true }: Props) {
 											>
 												{getIcon(task.task_type)}
 												{!task.completed && !needsBinding && (
-													<div className="absolute inset-0 rounded-lg bg-gradient-to-r from-blue-400/20 to-purple-400/20 blur-sm -z-10"></div>
+													<div className="absolute inset-0 rounded-lg bg-linear-to-r from-blue-400/20 to-purple-400/20 blur-sm -z-10"></div>
 												)}
 											</motion.div>
 										) : (
-											<div className="w-8 h-8 bg-gradient-to-br from-slate-400 to-slate-600 rounded-lg flex items-center justify-center">
+											<div className="w-8 h-8 bg-linear-to-br from-slate-400 to-slate-600 rounded-lg flex items-center justify-center">
 												<div className="w-4 h-4 bg-white rounded-sm opacity-90"></div>
 											</div>
 										)}
@@ -382,7 +396,7 @@ export default function TaskLayout({ mini = false, addPadding = true }: Props) {
 
 											<Badge
 												variant={task.completed ? "secondary" : "default"}
-												className="flex-shrink-0 text-xs"
+												className="shrink-0 text-xs"
 											>
 												{task.completed ? "✓ Done" : "Active"}
 											</Badge>
@@ -393,7 +407,7 @@ export default function TaskLayout({ mini = false, addPadding = true }: Props) {
 											{/* Reward Badge */}
 											<div className="flex items-center gap-2">
 												<div
-													className={`flex items-center gap-1 px-3 py-1.5 rounded-full bg-gradient-to-r ${rewardTier.color} text-white text-sm font-semibold`}
+													className={`flex items-center gap-1 px-3 py-1.5 rounded-full bg-linear-to-r ${rewardTier.color} text-white text-sm font-semibold`}
 												>
 													<span>{task.reward_point}</span>
 													<RewardIcon className="w-3 h-3" />
