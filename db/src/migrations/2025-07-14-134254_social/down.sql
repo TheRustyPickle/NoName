@@ -1,0 +1,2 @@
+DROP TABLE IF EXISTS user_socials;
+DROP TYPE IF EXISTS platform;

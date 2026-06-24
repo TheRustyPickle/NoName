@@ -1,0 +1,39 @@
+[package]
+name = "backend"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+actix-cors = "0.7.1"
+actix-multipart = "0.8.0"
+actix-web = "4.14.0"
+actix-ws = "0.4.0"
+alloy-core = "1.6.0"
+alloy-signer = "2.1.0"
+anyhow.workspace = true
+base64 = "0.22.1"
+bots.workspace = true
+bs58 = "0.5.1"
+chrono = { workspace = true }
+dashmap = "6.2.1"
+db = { workspace = true }
+diesel = { workspace = true }
+diesel-async = { workspace = true }
+dotenvy = "0.15.7"
+ed25519-dalek = { version = "2.2.0", features = ["pem"] }
+futures-util = "0.3.32"
+hex = "0.4.3"
+hmac = "0.13.0"
+jsonwebtoken = { version = "10.4.0", features = ["rust_crypto"] }
+log = "0.4.33"
+pretty_env_logger = "0.5.0"
+rand = "0.10.1"
+redis.workspace = true
+reqwest = { version = "0.13.4", features = ["form", "json"] }
+serde = { workspace = true }
+serde_json = { workspace = true }
+sha2 = "0.11.0"
+tokio = { workspace = true }
+ulid.workspace = true
+url = "2.5.8"
+urlencoding = "2.1"

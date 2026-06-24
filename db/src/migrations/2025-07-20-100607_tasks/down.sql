@@ -1,0 +1,4 @@
+DROP TABLE IF EXISTS task_completions;
+DROP TABLE IF EXISTS tasks;
+
+DROP TYPE IF EXISTS task_type;

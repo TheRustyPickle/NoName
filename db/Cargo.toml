@@ -1,0 +1,20 @@
+[package]
+name = "db"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anyhow.workspace = true
+chrono.workspace = true
+diesel.workspace = true
+diesel-async.workspace = true
+diesel-derive-enum = { version = "3.0.0-beta.1", features = ["postgres"] }
+futures-util = "0.3.32"
+redis.workspace = true
+rustls = { version = "0.23.41", features = ["ring"] }
+serde.workspace = true
+serde_json.workspace = true
+tokio.workspace = true
+tokio-postgres = "0.7.18"
+tokio-postgres-rustls = "0.14.0"
+ulid.workspace = true
