@@ -13,7 +13,7 @@ use std::sync::{Arc, OnceLock};
 use tokio::task::{spawn, spawn_local};
 use web::{Data, Payload, resource};
 
-use crate::auth::{clean_up_verifier_code, discord_callback, twitter_callback};
+use crate::auth::{clean_up_verifier_code, discord_callback};
 use crate::endpoints::{task_redirect, upload_avatar};
 use crate::ws::server::{Server, ServerInterface, handler};
 
@@ -23,10 +23,6 @@ pub static REDIS_URL: OnceLock<String> = OnceLock::new();
 pub static IMAGEKIT_PUBLIC: OnceLock<String> = OnceLock::new();
 pub static IMAGEKIT_PRIVATE: OnceLock<String> = OnceLock::new();
 pub static IMAGEKIT_URL: OnceLock<String> = OnceLock::new();
-
-pub static TWITTER_REDIRECT: OnceLock<String> = OnceLock::new();
-pub static TWITTER_CLIENT_ID: OnceLock<String> = OnceLock::new();
-pub static TWITTER_CLIENT_SECRET: OnceLock<String> = OnceLock::new();
 
 pub static DISCORD_CLIENT_ID: OnceLock<String> = OnceLock::new();
 pub static DISCORD_CLIENT_SECRET: OnceLock<String> = OnceLock::new();
@@ -110,13 +106,6 @@ async fn main() -> std::io::Result<()> {
 
     let imagekit_url = var("IMAGEKIT_URL").expect("IMAGEKIT_URL must be set");
 
-    let twitter_redirect = var("TWITTER_REDIRECT").expect("TWITTER_REDIRECT must be set");
-
-    let twitter_client_id = var("TWITTER_CLIENT_ID").expect("TWITTER_CLIENT_ID must be set");
-
-    let twitter_client_secret =
-        var("TWITTER_CLIENT_SECRET").expect("TWITTER_CLIENT_SECRET must be set");
-
     let discord_client_id = var("DISCORD_CLIENT_ID").expect("DISCORD_CLIENT_ID must be set");
 
     let discord_client_secret =
@@ -153,18 +142,6 @@ async fn main() -> std::io::Result<()> {
     IMAGEKIT_URL
         .set(imagekit_url)
         .expect("IMAGEKIT_URL must be set only once");
-
-    TWITTER_CLIENT_ID
-        .set(twitter_client_id)
-        .expect("TWITTER_CLIENT_ID must be set only once");
-
-    TWITTER_CLIENT_SECRET
-        .set(twitter_client_secret)
-        .expect("TWITTER_CLIENT_SECRET must be set only once");
-
-    TWITTER_REDIRECT
-        .set(twitter_redirect)
-        .expect("TWITTER_REDIRECT must be set only once");
 
     DISCORD_CLIENT_ID
         .set(discord_client_id)
@@ -236,7 +213,6 @@ async fn main() -> std::io::Result<()> {
             .app_data(Data::new(pool))
             .app_data(Data::new(redis_conn))
             .service(resource("/").route(web::get().to(start_ws)))
-            .service(resource("/auth/twitter").route(web::get().to(twitter_callback)))
             .service(resource("/auth/discord").route(web::get().to(discord_callback)))
             .service(resource("/redirect").route(web::get().to(task_redirect)))
             .service(Scope::new("").wrap(cors_conf).service(upload_avatar));
