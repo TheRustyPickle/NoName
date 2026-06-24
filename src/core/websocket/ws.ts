@@ -64,7 +64,7 @@ export class WebSocketService {
 	private onConnectionChangeCallback?: (isOpen: boolean) => void;
 
 	private url =
-		process.env.NEXT_PUBLIC_WS_URL || "wss://tbd-backend-vfyc.shuttle.app/";
+		process.env.NEXT_PUBLIC_WS_URL || "wss://rustypickle.onrender.com/ws";
 
 	connect() {
 		if (this.socket) return;
