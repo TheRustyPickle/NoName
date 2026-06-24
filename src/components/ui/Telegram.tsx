@@ -25,7 +25,7 @@ export default function TelegramLogin() {
 		);
 		script.setAttribute(
 			"data-auth-url",
-			"https://tbd-backend-vfyc.shuttle.app/auth/telegram",
+			"https://rustypickle.onrender.com/auth/telegram",
 		);
 		script.async = true;
 

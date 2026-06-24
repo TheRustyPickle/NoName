@@ -29,7 +29,7 @@ import Wallets from "./Wallets";
 
 const UPLOAD_URL =
 	process.env.NEXT_PUBLIC_UPLOAD_URL ||
-	"https://tbd-backend-vfyc.shuttle.app/upload-avatar";
+	"https://rustypickle.onrender.com/upload-avatar";
 
 type SocialKey = keyof SocialLinks;
 
