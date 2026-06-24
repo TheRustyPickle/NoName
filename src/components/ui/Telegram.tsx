@@ -10,8 +10,12 @@ declare global {
 
 export default function TelegramLogin() {
 	useEffect(() => {
+		let timeoutId: NodeJS.Timeout;
+
 		window.onTelegramAuth = (user: TelegramUser) => {
-			ws.sendMessage(createTelegram(user));
+			timeoutId = setTimeout(() => {
+				ws.sendMessage(createTelegram(user));
+			}, 2000);
 		};
 
 		const script = document.createElement("script");
