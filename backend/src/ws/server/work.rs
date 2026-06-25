@@ -292,18 +292,19 @@ impl Server {
 
     pub async fn telegram(&mut self, conn_id: ConnId, tg_user: TelegramUser) -> Result<WsResponse> {
         {
-            let user = self
-                .logged_in
-                .get_mut(&conn_id)
-                .ok_or(anyhow!("{conn_id} not logged in"))?;
-
-            if verify_hash(&tg_user).is_err() {
+            if let Err(e) = verify_hash(&tg_user) {
+                error!("Telegram hash verification failed. Reason: {:?}", e);
                 return Ok(WsResponse::telegram_error(String::from(
                     "Could not verify Telegram login. Please try again",
                 )));
             }
 
             let mut conn = self.pool.get().await?;
+
+            let user = self
+                .logged_in
+                .get_mut(&conn_id)
+                .ok_or(anyhow!("{conn_id} not logged in"))?;
 
             let user_social = UserSocial::new(
                 user.user_id.clone(),

@@ -1,7 +1,7 @@
 use actix_multipart::Multipart;
 use actix_web::http::header::{self, HeaderMap};
 use actix_web::web::{self, Data};
-use actix_web::{Error, HttpRequest, HttpResponse, error, post};
+use actix_web::{Error, HttpRequest, HttpResponse, error};
 use anyhow::anyhow;
 use base64::Engine;
 use base64::engine::general_purpose::STANDARD;
@@ -38,7 +38,6 @@ struct ImageResponse {
     file_id: String,
 }
 
-#[post("/upload-avatar")]
 pub async fn upload_avatar(
     mut payload: Multipart,
     req: HttpRequest,
@@ -47,11 +46,6 @@ pub async fn upload_avatar(
 ) -> Result<HttpResponse, Error> {
     let token = extract_token(req.headers())
         .ok_or_else(|| error::ErrorUnauthorized("Missing or invalid Authorization header"))?;
-
-    let ip_local = req
-        .peer_addr()
-        .map(|addr| addr.ip().to_string())
-        .unwrap_or_default();
 
     let user_agent = req
         .headers()
@@ -65,17 +59,24 @@ pub async fn upload_avatar(
         .get("X-Forwarded-For")
         .map(|v| v.to_str().unwrap_or_default())
         .unwrap_or_default()
+        .split(',')
+        .next()
+        .unwrap_or("")
+        .trim()
         .to_string();
 
     let ip = if forwarded_ip.is_empty() {
-        ip_local
+        req.peer_addr()
+            .map(|addr| addr.ip().to_string())
+            .unwrap_or_default()
     } else {
         forwarded_ip
     };
 
     let user_ip_agent = UserIpAgent { ip, user_agent };
 
-    let claims = validate_token(&token, &user_ip_agent).map_err(|_| {
+    let claims = validate_token(&token, &user_ip_agent).map_err(|e| {
+        error!("Failed to validate token: {}", e);
         error::ErrorUnauthorized("Invalid or expired token. Please reload the site and try again")
     })?;
 

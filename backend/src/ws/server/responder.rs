@@ -187,6 +187,8 @@ impl Server {
 
         let work_string = format!("{:?}", command.work);
 
+        log::info!("Handling work: {}", work_string);
+
         let response = match command.work {
             Work::Connect { conn_tx, sender } => {
                 let conn_id = self.connect(conn_tx);
@@ -320,8 +322,10 @@ impl Server {
                 }
             };
 
-            if let Some(tx) = self.sessions.get(&conn_id) {
-                let _ = tx.send(to_send);
+            if let Some(tx) = self.sessions.get(&conn_id)
+                && let Err(e) = tx.send(to_send)
+            {
+                error!("Error sending response to client. Reason: {:?}", e);
             }
         }
     }

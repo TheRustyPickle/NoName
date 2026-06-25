@@ -235,23 +235,6 @@ pub async fn update_user_photo(
     Ok(())
 }
 
-pub async fn update_user_twitter(
-    conn: &mut ConnectionManager,
-    user_key: &str,
-    twitter: String,
-    twitter_id: String,
-) -> Result<()> {
-    let _: () = conn
-        .hset_multiple(
-            user_key,
-            &[(HSET_TWITTER, twitter), (HSET_TWITTER_ID, twitter_id)],
-        )
-        .await
-        .context("Failed to update user Twitter info")?;
-
-    Ok(())
-}
-
 pub async fn update_user_discord(
     conn: &mut ConnectionManager,
     user_key: &str,

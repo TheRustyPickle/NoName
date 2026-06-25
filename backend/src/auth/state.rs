@@ -11,15 +11,9 @@ pub struct OAuthUrl {
 pub struct CodeVerifier {
     pub created_on: DateTime<Utc>,
     pub lifetime: u8,
+    #[allow(dead_code)]
     pub code: String,
     pub conn_id: ConnId,
-}
-
-#[derive(Deserialize)]
-pub struct TwitterUser {
-    pub id: String,
-    pub name: String,
-    pub username: String,
 }
 
 #[derive(Deserialize)]

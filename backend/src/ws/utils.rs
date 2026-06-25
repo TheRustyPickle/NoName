@@ -143,5 +143,5 @@ pub fn generate_referral_code() -> String {
 }
 
 pub fn craft_sign_message(key: &str) -> String {
-    format!("Welcome to Origil. Sign this message to continue. Signing with: {key}")
+    format!("Welcome to the app. Sign this message to continue. Signing with: {key}")
 }
